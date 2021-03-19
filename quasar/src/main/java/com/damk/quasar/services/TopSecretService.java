@@ -44,9 +44,6 @@ import com.google.gson.reflect.TypeToken;
 public class TopSecretService {
 
 	@Autowired
-	private AlgoritmoPosicionamiento algoritmoPosicionamiento;
-	
-	@Autowired
 	private Triangulacion algoritmoTriangulacion;
 	
 	@Autowired
@@ -54,17 +51,19 @@ public class TopSecretService {
 	
 	@Autowired
 	private ColeccionTransmisiones colTransmisiones;
-	/*
-	public String darDatos(Satelite satelite) {
-		Posicion posicion = satelite.getLocation();
-		String mensaje = satelite.obtenerMensaje();
-		RespuestaSatelite response = new RespuestaSatelite(posicion, mensaje);
-		Gson gson = new Gson();
-		String json = gson.toJson(response);
-		return json;
-	}
-	*/
 	
+	/*
+
+	 */
+	/**
+	 * Consulta entre los datos almacenados debidoa al envio de esta consulta
+	 * POST -> /topsecret_split/{satellite_name
+	 * Y entre esos datos intentará encontrar el mensaje enviado y la distancia a 1 satelite en particular
+	 * Se encargará de recopilar dichos datos y tratar de obtener el mensaje original al
+	 * mergearlo y también obtener la posición de la nave mediante triangulación
+	 * @return RespuestaSatelite (Posicion de coordenasda de la nave Y mensaje original)
+	 * @throws ExcepcionSatelite
+	 */
 	public RespuestaSatelite obtenerUbicacionYDatosAlmacenados() throws ExcepcionSatelite {
 		Type type = new TypeToken<DatosTranmsision>(){}.getType();
 		
@@ -82,10 +81,13 @@ public class TopSecretService {
 		return new RespuestaSatelite(posicionNave, mensaje);
 	}
 	
-	/*
+	/**
 	 * Guarda los datos de la posición y el mensaje que se recibió de una nave actualizando dichos datos 
 	 * para un satélite del cual se sabe su nombre
 	 * En caso de que dicho nombr eno figura entre los satélites existentes entonces lanza una excepción
+	 * @param payload  (Estructura es la sigueinte (distancia: Float, mensaje: ArrayList<String>) 
+	 * @param nombreSatelite
+	 * @throws ExcepcionSatelite (Solo sale en el caso que se pasó un nombre de satélite que no existe)
 	 */
 	public void guardarDatosDeUbicacionYMensaje(String payload, String nombreSatelite) throws ExcepcionSatelite {
 		Type type = new TypeToken<DatosTranmsision>(){}.getType();
@@ -104,7 +106,22 @@ public class TopSecretService {
 		}
 	}
 	
-	public RespuestaSatelite ejecutarServicio(String payload) throws ExcepcionSatelite {
+	
+	/**
+	 *  A partir de un conjunto de array de datos que contiene cada uno 1 nombre, 1 distancia y 1 mensaje
+	 *  Entonces tratará de decifrar el mensaje original y devolverla además que mediante triangulación
+	 *  se obtendría la posición de la nave
+	 * @param payload (Array que contiene estos datos (nombre:String, distancia:Float, mensaje:ArrayList<String>)
+	 * @return RespuestaSatelite (Posicion en el jee de coordenadas de la nave y el mensaje original)
+	 * @throws ExcepcionSatelite
+	 * 			* Puede tener 2 tipos de excepciones:
+	 * 				1* Relacionado al mensaje (se da en el caso de que las palabras no matchean en las posiciones
+	 * 					que corresponden o al mergear todos los mensajes aun sigue existiendo campos vacios dejando 
+	 * 					el mensaje incompleto
+	 * 				2* Relacionado a la triangulación, no existe punto en el cual concuerden los 3 satelites,
+	 * 					Esto se da debido que algunas de las distancias son erroneas.
+	 */
+	public RespuestaSatelite obtenerUbicacionYMensajeDeDatosEntrantesr(String payload) throws ExcepcionSatelite {
 		Type type = new TypeToken<InfoObtenida>(){}.getType();
 		InfoObtenida info =  new Gson().fromJson(payload, type);
 		//Una vez obtenida la inforamción sobre los satélites queda ordenar
