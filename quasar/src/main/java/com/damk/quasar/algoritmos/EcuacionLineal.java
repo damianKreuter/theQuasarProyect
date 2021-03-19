@@ -44,15 +44,6 @@ public class EcuacionLineal {
 		return independiente/valorX;
 	}
 	
-	public Float obtenerOrdenadaIndependiente(Float posicionX, Float posicionY, Float distancia) {
-		double x= Math.pow(posicionX, 2);
-		double y= Math.pow(posicionY, 2);
-		double distancia2 = Math.pow(distancia, 2);
-		posicionX = (float) x;
-		posicionY = (float) y;
-		return (float) (distancia2-x-y);
-	}
-	
 	//Tomamos en consideracion que no tiene el segundo
 	public Float reemplazarValorObtenidoDeX(Float xObtenido) {
 		Float resultado = this.getIndependiente()-this.getxGrado1()*xObtenido;
