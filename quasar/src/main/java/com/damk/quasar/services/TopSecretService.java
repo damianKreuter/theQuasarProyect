@@ -89,10 +89,7 @@ public class TopSecretService {
 	 * @param nombreSatelite
 	 * @throws ExcepcionSatelite (Solo sale en el caso que se pasó un nombre de satélite que no existe)
 	 */
-	public void guardarDatosDeUbicacionYMensaje(String payload, String nombreSatelite) throws ExcepcionSatelite {
-		Type type = new TypeToken<DatosTranmsision>(){}.getType();
-		DatosTranmsision infoTransmision =  new Gson().fromJson(payload, type);
-		
+	public void guardarDatosDeUbicacionYMensaje(DatosTranmsision infoTransmision, String nombreSatelite) throws ExcepcionSatelite {		
 		Optional<Satelite> sateliteBuscado = colSatelites.getListaSatelites().stream()
 			.filter(satelite -> satelite.getNombre().equals(nombreSatelite))
 			.findFirst();
@@ -106,6 +103,13 @@ public class TopSecretService {
 		}
 	}
 	
+	public ArrayList<Satelite> obtenerCoordenadasDeSAtelites() {
+		return colSatelites.getListaSatelites();
+	}
+	
+	public void cambiarCoordendasDeSatelite(Posicion posicionNueva, String nombreSatelite) {
+		colSatelites.cambiarCoordenasDeSatelite(nombreSatelite, posicionNueva);
+	}
 	
 	/**
 	 *  A partir de un conjunto de array de datos que contiene cada uno 1 nombre, 1 distancia y 1 mensaje
@@ -121,9 +125,8 @@ public class TopSecretService {
 	 * 				2* Relacionado a la triangulación, no existe punto en el cual concuerden los 3 satelites,
 	 * 					Esto se da debido que algunas de las distancias son erroneas.
 	 */
-	public RespuestaSatelite obtenerUbicacionYMensajeDeDatosEntrantesr(String payload) throws ExcepcionSatelite {
-		Type type = new TypeToken<InfoObtenida>(){}.getType();
-		InfoObtenida info =  new Gson().fromJson(payload, type);
+	public RespuestaSatelite obtenerUbicacionYMensajeDeDatosEntrantesr(InfoObtenida info) throws ExcepcionSatelite {
+
 		//Una vez obtenida la inforamción sobre los satélites queda ordenar
 		//Primero ordenaremos el mensaje 
 		

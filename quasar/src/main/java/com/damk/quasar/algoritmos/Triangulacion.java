@@ -43,8 +43,8 @@ public class Triangulacion {
 			//Multiplico por -1 ya que es el despeje y cambia su signo
 			valoresDelDespeje.add(despejeDeXde1Y2.getxGrado1()*-1);
 			valoresDelDespeje.add(despejeDeXde1Y2.getIndependiente());
-			Float xObtenido = diferenciaEcuacion1Y2.reemplazarY(valoresDelDespeje);
-			Float yObtenido = despejeDeXde1Y2.reemplazarValorObtenidoDeX(xObtenido);
+			Float xObtenido = diferenciaEcuacion1Y2.reemplazarYEnEcuacionLineal(valoresDelDespeje);
+			Float yObtenido = despejeDeXde1Y2.reemplazarValorObtenidoDeXEnEcuacionLineal(xObtenido);
 			if(verificarCoordenadasEnEcuaciones(xObtenido, yObtenido, ecuaciones)) {
 				return new Posicion(xObtenido,yObtenido);
 			}

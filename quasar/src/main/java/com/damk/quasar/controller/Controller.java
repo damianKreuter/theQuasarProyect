@@ -1,5 +1,6 @@
 package com.damk.quasar.controller;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.damk.quasar.excepciones.ExcepcionSatelite;
 import com.damk.quasar.services.TopSecretService;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.damk.quasar.model.DatosTranmsision;
 import com.damk.quasar.model.InfoSatelite;
+import com.damk.quasar.model.Posicion;
 import com.damk.quasar.model.RespuestaSatelite;
+import com.damk.quasar.model.Satelite;
+import com.damk.quasar.model.colections.InfoObtenida;
 
 @RestController
 public class Controller {
@@ -33,7 +40,9 @@ public class Controller {
 //		System.out.println(payload);
 		String respuesta = "";
 		try {
-			RespuestaSatelite respuestaDeServicio = topSecretService.ejecutarServicio(payload);
+			Type type = new TypeToken<InfoObtenida>(){}.getType();
+			InfoObtenida info =  new Gson().fromJson(payload, type);
+			RespuestaSatelite respuestaDeServicio = topSecretService.obtenerUbicacionYMensajeDeDatosEntrantesr(info);
 			return new ResponseEntity<String>(respuestaDeServicio.toJson(), HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			respuesta = e.getMessage();
@@ -48,19 +57,55 @@ public class Controller {
 	@RequestMapping(method=RequestMethod.POST, value="/topsecret_split/{satellite_name}")
 	public ResponseEntity<String> guardarUbicacionYMensajeEmitidoASatelite(@RequestBody String payload, @PathVariable String satellite_name) {
 		try {
-			topSecretService.guardarDatosDeUbicacionYMensaje(payload, satellite_name);
+			Type type = new TypeToken<DatosTranmsision>(){}.getType();
+			DatosTranmsision infoTransmision =  new Gson().fromJson(payload, type);
+			topSecretService.guardarDatosDeUbicacionYMensaje(infoTransmision, satellite_name);
 			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 		} catch (ExcepcionSatelite e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
 	
+	/**
+	 * De todas los satélites, obtenemos su posición en X e Y
+	 * 
+	 * Debe retornar el sigueinte json 
+	 * {
+	 * 	satelites:[
+	 * 		nombre:String,
+	 * 		Posicion : {
+	 * 			x: Float,
+	 * 			y : Float
+	 * 		}	
+	 * 	]
+	 * }
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.GET, value="/coordenadas/")
+	public ResponseEntity<String> obtenerCoordenaS() {
+		ArrayList<Satelite> respuesta = topSecretService.obtenerCoordenadasDeSAtelites();
+		return new ResponseEntity<String>(new Gson().toJson(respuesta), HttpStatus.ACCEPTED);
+	}
+	@RequestMapping(method=RequestMethod.POST, value="/coordenadas/{satellite_name}")
+	public ResponseEntity<String> cambiarCoordenasDeSatelite(@RequestBody String payload, @PathVariable String satellite_name) {
+		try {
+			Type type = new TypeToken<Posicion>(){}.getType();
+			Posicion posicionNueva =  new Gson().fromJson(payload, type);
+			topSecretService.cambiarCoordendasDeSatelite(posicionNueva, satellite_name);
+			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+		}
+		
+	}
+	
+	
 	/*
 	 * Buscará entre la información que se guardó de los satélites y tratará
 	 * de obtener la ubicación de la nave y también del mensaje.
 	 * Sin embargo, en caso de que el mensaje esté incompleto o que la ubicación
 	 * de la nave no se puede obtener, entocncer devolverá un mensaje que
-	 * "NO HYA SUFICIENTE INFORMACIÓN"
+	 * "NO HAY SUFICIENTE INFORMACIÓN"
 	 */
 	@RequestMapping(method=RequestMethod.GET, value="/topsecret_split/")
 	public ResponseEntity<String> obtenerInformacionPorSatelite() {

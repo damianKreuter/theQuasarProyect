@@ -37,6 +37,12 @@ public class ColeccionSatelites {
 		*/
     } 
 	
+	public void cambiarCoordenasDeSatelite(String nombreSatelite, Posicion nuevaPosicion) {
+		listaSatelites.stream()
+			.filter(satelite->satelite.getNombre().equals(nombreSatelite))
+			.forEach(satelite->satelite.setLocation(nuevaPosicion));
+	}
+	
 	private Satelite creacionSatelite(String nombre, Posicion ubicacion) {
 		return new Satelite(nombre, ubicacion);
 	}

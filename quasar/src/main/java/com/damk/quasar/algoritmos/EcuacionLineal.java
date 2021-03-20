@@ -29,7 +29,7 @@ public class EcuacionLineal {
 
 	//El primer item es X y el segundo el indepedientes
 	//Siempre será al grado 1 porque el 2 es 0 por lo tanto quedaria en 0
-	public Float reemplazarY(ArrayList<Float> valoresAReemplazar) {
+	public Float reemplazarYEnEcuacionLineal(ArrayList<Float> valoresAReemplazar) {
 		Float valorMultiplicadorDeVariable = this.getyGrado1();
 		//Con esto multiplico de forma automática así luego los sumo tanto la variable como la independiente
 		valoresAReemplazar = (ArrayList<Float>) valoresAReemplazar.stream()
@@ -45,16 +45,16 @@ public class EcuacionLineal {
 	}
 	
 	//Tomamos en consideracion que no tiene el segundo
-	public Float reemplazarValorObtenidoDeX(Float xObtenido) {
+	public Float reemplazarValorObtenidoDeXEnEcuacionLineal(Float xObtenido) {
 		Float resultado = this.getIndependiente()-this.getxGrado1()*xObtenido;
 		return resultado/this.getyGrado1();
 	}
 
-	public Float buscarValorDeYAPartirDeX(Float x) {
+	public Float buscarValorDeYAPartirDeXEnEcuacionLienal(Float x) {
 		return this.restarAIndependiente(xGrado1*x)/yGrado1;
 	}
 	
-	public Float buscarValorDeXAPartirDeY(Float y) {
+	public Float buscarValorDeXAPartirDeYEnEcuacionLienal(Float y) {
 		return this.restarAIndependiente(yGrado1*y)/xGrado1;
 	}
 	
