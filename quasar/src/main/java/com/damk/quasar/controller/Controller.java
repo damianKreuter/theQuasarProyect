@@ -106,7 +106,6 @@ public class Controller {
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
-		
 	}
 	
 	
@@ -124,6 +123,16 @@ public class Controller {
 			return new ResponseEntity<String>(respuestaDeServicio.toJson(), HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("No hay suficiente información", HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@RequestMapping(method=RequestMethod.DELETE, value="/topsecret_split/")
+	public ResponseEntity<String> eliminarTopSecretSplit() {
+		try {
+			topSecretService.eliminarInfoAlmacenada();
+			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("No hay se pudo borrar los datos", HttpStatus.NOT_FOUND);
 		}
 	}
 	

@@ -84,6 +84,10 @@ public class TopSecretService {
 		return new RespuestaSatelite(posicionNave, mensaje);
 	}
 	
+	public void eliminarInfoAlmacenada() {
+		colTransmisiones.setListaTransmisiones(new ArrayList<Transmision>());
+	}
+	
 	/**
 	 * Guarda los datos de la posición y el mensaje que se recibió de una nave actualizando dichos datos 
 	 * para un satélite del cual se sabe su nombre
