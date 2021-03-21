@@ -1,0 +1,32 @@
+{
+    "/coordenadas/":{
+        "target":"http://localhost:8080",
+        "secure":false,
+        "changeOrigin":true,
+        "logLevel":"debug"
+    },
+    "/coordenadas/*":{
+        "target":"http://localhost:8080",
+        "secure":false,
+        "changeOrigin":true,
+        "logLevel":"debug"
+    },
+    "/topsecret/":{
+        "target":"http://localhost:8080",
+        "secure":false,
+        "changeOrigin":true,
+        "logLevel":"debug"
+    },
+    "/topsecret_split/":{
+        "target":"http://localhost:8080",
+        "secure":false,
+        "changeOrigin":true,
+        "logLevel":"debug"
+    },
+    "/topsecret_split/*":{
+        "target":"http://localhost:8080",
+        "secure":false,
+        "changeOrigin":true,
+        "logLevel":"debug"
+    }
+}

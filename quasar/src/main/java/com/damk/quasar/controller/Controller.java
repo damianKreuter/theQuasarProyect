@@ -66,6 +66,16 @@ public class Controller {
 		}
 	}
 	
+	@RequestMapping(method=RequestMethod.GET, value="/topsecret_split/data")
+	public ResponseEntity<String> obtenerDatosDeSatelites() {
+		try {
+			String data = topSecretService.obtenerDatosDeSatelites();
+			return new ResponseEntity<String>(data, HttpStatus.ACCEPTED);
+		} catch (ExcepcionSatelite e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	/**
 	 * De todas los satélites, obtenemos su posición en X e Y
 	 * 
@@ -92,9 +102,9 @@ public class Controller {
 			Type type = new TypeToken<Posicion>(){}.getType();
 			Posicion posicionNueva =  new Gson().fromJson(payload, type);
 			topSecretService.cambiarCoordendasDeSatelite(posicionNueva, satellite_name);
-			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+			return new ResponseEntity<String>("Cambios aceptados", HttpStatus.ACCEPTED);
 		} catch (Exception e) {
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 		
 	}

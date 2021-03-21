@@ -16,6 +16,7 @@ import com.damk.quasar.algoritmos.DistanciaYPosicion;
 import com.damk.quasar.algoritmos.Triangulacion;
 import com.damk.quasar.excepciones.ExcepcionSatelite;
 import com.damk.quasar.model.DatosTranmsision;
+import com.damk.quasar.model.DatosTransmisionReturn;
 import com.damk.quasar.model.InfoSatelite;
 import com.damk.quasar.model.Mensaje;
 import com.damk.quasar.model.Posicion;
@@ -103,11 +104,16 @@ public class TopSecretService {
 		}
 	}
 	
+	public String obtenerDatosDeSatelites() {
+		ArrayList<DatosTransmisionReturn> data = colTransmisiones.devolverDatos();
+		return new Gson().toJson(data);
+	}
+	
 	public ArrayList<Satelite> obtenerCoordenadasDeSAtelites() {
 		return colSatelites.getListaSatelites();
 	}
 	
-	public void cambiarCoordendasDeSatelite(Posicion posicionNueva, String nombreSatelite) {
+	public void cambiarCoordendasDeSatelite(Posicion posicionNueva, String nombreSatelite) throws ExcepcionSatelite {
 		colSatelites.cambiarCoordenasDeSatelite(nombreSatelite, posicionNueva);
 	}
 	
@@ -133,6 +139,9 @@ public class TopSecretService {
 		if(!this.todosLosSatelitesExisten(info.getSatelites())) {
 			throw new ExcepcionSatelite("Algún satelite de los obtenidos cuyo nombre no corresponde a ninguno de los existentes");
 		} 
+		if(info.getSatelites().size()!=3) {
+			throw new ExcepcionSatelite("Faltan algun satélite para consultar o están sobrando");
+		}
 		ArrayList<Mensaje> mensajesEmitidos = (ArrayList<Mensaje>) info.getSatelites().stream()
 				.map(satelite->new Mensaje(satelite.getMensajeEncriptado()))
 				.collect(Collectors.toList());
@@ -245,5 +254,4 @@ public class TopSecretService {
 		return colSatelites.getListaSatelites().stream()
 				.anyMatch(satelite->satelite.mismoNombre(name));
 	}
-	
 }

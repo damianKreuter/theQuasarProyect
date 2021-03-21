@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
+import com.damk.quasar.model.DatosTransmisionReturn;
 import com.damk.quasar.model.Posicion;
 import com.damk.quasar.model.Satelite;
 import com.damk.quasar.model.Transmision;
@@ -46,6 +47,15 @@ public class ColeccionTransmisiones {
 		} else {
 			this.agregarTransmision(transmisionModificada);
 		}
+	}
+	
+	public ArrayList<DatosTransmisionReturn> devolverDatos(){
+		ArrayList<DatosTransmisionReturn> datosList = new ArrayList<DatosTransmisionReturn>();
+		for(Transmision t : this.getListaTransmisiones()) {
+			DatosTransmisionReturn data = new DatosTransmisionReturn(t.getSatelite().getNombre(), t.getDistanciaASatelite(), t.getMensajeRecibido());
+			datosList.add(data);
+		}
+		return datosList;
 	}
 	
 	private Boolean esSateliteBuscado(Satelite satelite, String nombreBuscado) {

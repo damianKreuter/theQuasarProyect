@@ -1,42 +1,38 @@
+
+
+
+
 <p>
   Servicio 1, enviar esta información y obtener la ubicación de la nave en el caso que se pueda y el mensaje original
 </p>
+
+<input #nombreSatelitePeticion placeholder="Nombre de satélite"/>
+<input #distanciaPeticion placeholder="distancia"/>
+<input #mensajesPeticion placeholder="Mensajes a enviar"/>
+<button (click)="agregarItem(nombreSatelitePeticion.value, distanciaPeticion.value, mensajesPeticion.value)" class="btn btn-success justify-content-center">Agregar datos de consulta</button>
+
 <table class="table">
   <thead class="table-dark">
     <tr>
+      <th scope="col">#</th>
       <th scope="col">Nombre satélite</th>
       <th scope="col">Distancia</th>
       <th scope="col">Mensaje recibido</th>
-      <th scope="col">Palabra nueva a agregar</th>
-      <th scope="col">Limpiar</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>kenobi</td>
-      <td>100.0</td>
-      <td>["este", "", "", "mensaje", ""]</td>
-      <td><button class="btn btn-info">Agregar palabra</button></td>
-      <td><button class="btn btn-danger">Limpiar palabras</button></td>
-    </tr>
-    <tr>
-      <td>skywalker</td>
-      <td>50.0</td>
-      <td>["", "es", "", "mensaje", "secreto"]</td>
-      <td><button class="btn btn-info">Agregar palabra</button></td>
-      <td><button class="btn btn-danger">Limpiar palabras</button></td>
-    </tr>
-    <tr>
-      <td>sato</td>
-      <td>25.0</td>
-      <td>["", "", "un", "", "secreto"]</td>
-      <td><button class="btn btn-info">Agregar palabra</button></td>
-      <td><button class="btn btn-danger">Limpiar palabras</button></td>
+    <tr *ngFor="let info of satelites; index as i">
+      <td>{{i}}</td>
+      <td>{{info.satelite}}</td>
+      <td>{{info.distance}}</td>
+      <td>[ {{info.mensaje}} ]</td>
     </tr>
   </tbody>
 </table>
 
-<button class="btn btn-success justify-content-center">Enviar consulta</button>
+<button (click)="vaciarTodo()" class="btn btn-danger justify-content-center">Borrar todos los elementos de la lista</button>
+<button (click)="enviarPeticionDeUbicacion()" class="btn btn-success justify-content-center">Enviar consulta</button>
+
 <p>
   Servicio 2, visualizar y actualizar la posición de los satélites
 </p>
@@ -46,67 +42,57 @@
       <th scope="col">Nombre satélite</th>
       <th scope="col">Posición X</th>
       <th scope="col">Posición Y</th>
-      <th scope="col">Actualizar</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>kenobi</td>
-      <td><input type="number" value="50.0"/></td>
-      <td><input type="number" value="50.0"/></td>
-      <td><button class="btn btn-info">Actualizar posición</button></td>
-    </tr>
-    <tr>
-      <td>skywalker</td>
-      <td><input type="number" value="50.0"/></td>
-      <td><input type="number" value="50.0"/></td>
-      <td><button class="btn btn-info">Actualizar posición</button></td>
-    </tr>
-    <tr>
-      <td>sato</td>
-      <td><input type="number" value="50.0"/></td>
-      <td><input type="number" value="50.0"/></td>
-      <td><button class="btn btn-info">Actualizar posición</button></td>
+    <tr *ngFor="let satelite of listaSatelites">
+      <td>{{satelite.nombre}}</td>
+      <td>{{satelite.ubicacion.x}}</td>
+      <td>{{satelite.ubicacion.y}}</td>
     </tr>
   </tbody>
 </table>
+<p>Modificar la posición de 1 satelite indicando su nombre y la posición nueva</p>
+
+  <input #posicionSatelite placeholder="Nombre de satélite">
+  <input #posicionX placeholder="Posicion en X">
+  <input #posicionY placeholder="Posicion en Y">
+  <button class="btn btn-info" (click)="actualizarPosicion(posicionSatelite.value, posicionX.value, posicionY.value)">Actualizar posición</button>
+
+
+
+
+
+
+
+
+
+
 <p>
-  Servicio 3, cargar para 1 satelite la dsitancia y el mensaje emitido por la nave
+  Servicio 3, cargar para 1 satelite la distancia y el mensaje emitido por la nave
 </p>
+
+<input #nombreSateliteAActualizar placeholder="Nombre de satélite"/>
+<input #distanciaAActualizar placeholder="distancia"/>
+<input #mensajesAActualizar placeholder="Mensajes a enviar"/>
+<button (click)="agregarItemDeDatosSobreNave(nombreSateliteAActualizar.value, distanciaAActualizar.value, mensajesAActualizar.value)" class="btn btn-success justify-content-center">Agregar datos</button>
+
 <table class="table">
   <thead class="table-dark">
     <tr>
       <th scope="col">Nombre satélite</th>
       <th scope="col">Distancia</th>
       <th scope="col">Mensaje recibido</th>
-      <th scope="col">Palabra nueva a agregar</th>
-      <th scope="col">Actualizar datos</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>kenobi</td>
-      <td>100.0</td>
-      <td>["este", "", "", "mensaje", ""]</td>
-      <td><button class="btn btn-info">Agregar palabra</button></td>
-      <td><button class="btn btn-info">Actualizar datos</button></td>
-    </tr>
-    <tr>
-      <td>skywalker</td>
-      <td>50.0</td>
-      <td>["", "es", "", "mensaje", "secreto"]</td>
-      <td><button class="btn btn-info">Agregar palabra</button></td>
-      <td><button class="btn btn-info">Actualizar datos</button></td>
-    </tr>
-    <tr>
-      <td>sato</td>
-      <td>25.0</td>
-      <td>["", "", "un", "", "secreto"]</td>
-      <td><button class="btn btn-info">Agregar palabra</button></td>
-      <td><button class="btn btn-info">Actualizar datos</button></td>
+    <tr *ngFor="let data of datosDeSatelites">
+      <td>{{data.satelite}}</td>
+      <td>{{data.distancia}}</td>
+      <td>[ {{data.mensaje}} ]</td>
     </tr>
   </tbody>
 </table>
 
-<button class="btn btn-success justify-content-center">Enviar consulta</button>
+<button (click)="obtenerPosicioNDeNaveYMensajeMedianteMensajesAlmacenados()" class="btn btn-success justify-content-center">Enviar consulta</button>
 
