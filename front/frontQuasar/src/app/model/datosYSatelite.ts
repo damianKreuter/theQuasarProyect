@@ -1,11 +1,11 @@
 export class DatosYSatelite {
-    satelite : String;
+    name : String;
     distance : String;
-    mensaje : String[]
+    message : String[]
 
     constructor(nombre:String, distancia:String, mensaje:String[]){
-        this.satelite=nombre
+        this.name=nombre
         this.distance=distancia
-        this.mensaje=mensaje
+        this.message=mensaje
     }
 }

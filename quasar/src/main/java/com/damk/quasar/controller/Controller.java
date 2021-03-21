@@ -35,7 +35,7 @@ public class Controller {
 	 * 
 	 * Debe retornar la posición actual de la nave y también el mensaje original con el cual se emitió
 	 */
-	@RequestMapping(method=RequestMethod.POST, value="/topSecret/")
+	@RequestMapping(method=RequestMethod.POST, value="/topsecret/")
 	public ResponseEntity<String> darUbicacionYMensaje(@RequestBody String payload) {
 //		System.out.println(payload);
 		String respuesta = "";
@@ -61,7 +61,7 @@ public class Controller {
 			DatosTranmsision infoTransmision =  new Gson().fromJson(payload, type);
 			topSecretService.guardarDatosDeUbicacionYMensaje(infoTransmision, satellite_name);
 			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
-		} catch (ExcepcionSatelite e) {
+		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
@@ -102,7 +102,7 @@ public class Controller {
 			Type type = new TypeToken<Posicion>(){}.getType();
 			Posicion posicionNueva =  new Gson().fromJson(payload, type);
 			topSecretService.cambiarCoordendasDeSatelite(posicionNueva, satellite_name);
-			return new ResponseEntity<String>("Cambios aceptados", HttpStatus.ACCEPTED);
+			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
@@ -122,7 +122,7 @@ public class Controller {
 		try {
 			RespuestaSatelite respuestaDeServicio = topSecretService.obtenerUbicacionYDatosAlmacenados();
 			return new ResponseEntity<String>(respuestaDeServicio.toJson(), HttpStatus.ACCEPTED);
-		} catch (ExcepcionSatelite e) {
+		} catch (Exception e) {
 			return new ResponseEntity<String>("No hay suficiente información", HttpStatus.NOT_FOUND);
 		}
 	}

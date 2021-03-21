@@ -68,7 +68,9 @@ public class TopSecretService {
 	public RespuestaSatelite obtenerUbicacionYDatosAlmacenados() throws ExcepcionSatelite {
 		Type type = new TypeToken<DatosTranmsision>(){}.getType();
 		
-		ArrayList<Mensaje> mensajesAlmacenados = (ArrayList<Mensaje>) colTransmisiones.getListaTransmisiones().stream()
+		ArrayList<Transmision> listaTransmisiones = colTransmisiones.getListaTransmisiones();
+		
+		ArrayList<Mensaje> mensajesAlmacenados = (ArrayList<Mensaje>) listaTransmisiones.stream()
 				.map(transmision->new Mensaje(transmision.getMensajeRecibido()))
 				.collect(Collectors.toList());
 		String mensaje = this.getMessage(mensajesAlmacenados);
