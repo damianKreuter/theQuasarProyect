@@ -73,9 +73,10 @@ export class AppComponent {
       let array : String[]=[]
       let palabra : String = ""
       Array.from(mensaje).forEach(function (element){
-        if(element=="-"){
+        if(element==" "){
           array.push(palabra)
           palabra =""
+        } else if(element=="-"){
         } else {
           palabra = palabra+element
         }
@@ -146,11 +147,28 @@ export class AppComponent {
         },
         error => {
             console.log('Oops', error.error)
-            this.respuestaServicio3 = JSON.stringify(error)
+            this.respuestaServicio3 = JSON.stringify(error.error)
             this.sweetAlertService.alertaERROR()          
           }
       )
     }
+
+    /*
+      SERVICIO 3
+      Borar las transmisiones enviadas y guardadas
+    */
+      vaciarDatosAlmacenados(){
+        this.quasarService.vaciarTransmisiones().subscribe(
+          r=>  {
+            console.log(JSON.stringify(r))
+            this.sweetAlertService.alertaOK();
+          },
+          error => {
+            console.log('Oops', error.error)
+            this.sweetAlertService.alertaERROR()          
+          }
+        )
+      }
 
     /*
       SERVICIO 2

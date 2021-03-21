@@ -46,4 +46,8 @@ export class ServicioQuasarService {
     let json = JSON.stringify(data)
     return this.http.get<any>(this.servicioConsultaADatosAlmacenados)
   }
+
+  vaciarTransmisiones() : Observable<any> {
+    return this.http.delete<any>(this.servicioConsultaADatosAlmacenados)
+  }
 }
